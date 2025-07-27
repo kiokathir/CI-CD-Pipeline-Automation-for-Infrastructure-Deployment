@@ -149,3 +149,6 @@ resource "aws_instance" "Private_ec2"{
     }
     depends_on = [aws_nat_gateway.Nat_gateway]
 }
+
+
+//commit-check
