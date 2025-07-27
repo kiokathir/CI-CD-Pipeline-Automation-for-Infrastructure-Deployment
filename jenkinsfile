@@ -1,0 +1,54 @@
+//four stages --checkout-->plan-->approve-->apply
+
+pipeline{
+    parameters{
+        booleanParam(name:"autoapprove",description:"auto deploy infra?",defaultValue:false)
+    }
+    environment{
+        AWS_ACCESS_KEY_ID=credentials("access_key")
+        AWS_SECRET_ACCESS_KEY=credentials("secret_key")
+    }
+    agent any
+    stages{
+        stage("checkout"){
+            steps{
+                dir("terraform"){
+                    git "link"
+                }
+            }
+        }
+        stage("plan"){
+            steps{
+                dir ("terraform"){
+                    sh "terraform init"
+                    sh "terraform plan -out=tfplan"
+                    sh "terraform show -no-color tfplan > tfplan.txt"
+                }
+            }
+        }
+        stage("approve"){
+            when{
+                not{
+                    equals expected: true, actual: params.autoapprove
+                }
+            }
+            steps{
+                dir ("terraform"){
+                script{
+                def plan = readFile "tfplan.txt"
+                input (message : "Do you want to approve the above plan",
+                parameters:[text(name :"plan",defaultValue:plan,description:"Do you want to approve the above plan")])
+                }
+                }
+            }
+        }   
+        stage("apply"){
+            steps{
+                dir("terraform"){
+                    sh "terraform apply -input=false tfplan"
+                }
+            }
+        }
+
+    }
+}
