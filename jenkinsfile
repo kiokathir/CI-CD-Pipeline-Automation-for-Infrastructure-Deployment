@@ -12,6 +12,7 @@ pipeline{
     stages{
         stage("checkout"){
             steps{
+                sh 'mkdir -p terraform'
                 dir("terraform"){
                     git branch: 'main', url: 'https://github.com/kiokathir/CI-CD-Pipeline-Automation-for-Infrastructure-Deployment.git'
                 }
