@@ -132,7 +132,7 @@ resource "aws_instance" "Public_ec2"{
     ami="ami-0d03cb826412c6b0f"
     instance_type="t2.micro"
     subnet_id=aws_subnet.public_subnet.id
-    security_groups=[aws_security_group.public-sg.name]
+    vpc_security_group_ids=[aws_security_group.public-sg.name]
      associate_public_ip_address = true
     tags={
         Name = "Public-EC2"
@@ -143,7 +143,7 @@ resource "aws_instance" "Private_ec2"{
     ami="ami-0d03cb826412c6b0f"
     instance_type="t2.micro"
     subnet_id=aws_subnet.private_subnet.id
-    security_groups=[aws_security_group.private-sg.name]
+    vpc_security_group_ids=[aws_security_group.private-sg.name]
     tags={
         Name = "Private-EC2"
     }
