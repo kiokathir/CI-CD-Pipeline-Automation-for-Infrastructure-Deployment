@@ -53,7 +53,7 @@ resource "aws_route_table_association" "Public_RT_association"{
 }
 
 resource "aws_eip" "Nat"{
-    vpc = true
+    #vpc = true
 }
 
 resource "aws_nat_gateway" "Nat_gateway"{
