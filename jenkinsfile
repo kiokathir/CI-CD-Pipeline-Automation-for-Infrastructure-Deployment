@@ -13,7 +13,7 @@ pipeline{
         stage("checkout"){
             steps{
                 dir("terraform"){
-                    git "link"
+                    git "https://github.com/kiokathir/CI-CD-Pipeline-Automation-for-Infrastructure-Deployment.git"
                 }
             }
         }
